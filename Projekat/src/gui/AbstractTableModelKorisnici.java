@@ -1,7 +1,8 @@
 package gui;
 
 import javax.swing.table.AbstractTableModel;
-import model.listaKorisnika;
+
+import model.ListaKorisnika;
 
 public class AbstractTableModelKorisnici extends AbstractTableModel {
 
@@ -9,24 +10,24 @@ public class AbstractTableModelKorisnici extends AbstractTableModel {
 
 	@Override
 	public int getRowCount() {
-		return listaKorisnika.getInstance().getKorisnici().size();
+		return ListaKorisnika.getInstance().getKorisnici().size();
 	}
 
 	@Override
 	public int getColumnCount() {
-		return listaKorisnika.getInstance().getColumnCount() ;
+		return ListaKorisnika.getInstance().getColumnCount();
 	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		return listaKorisnika.getInstance().getValueAt(rowIndex, columnIndex);
+		return ListaKorisnika.getInstance().getValueAt(rowIndex, columnIndex);
 	}
 
 	@Override
 	public void setValueAt(Object value, int rowIndex, int columnIndex) {
 		super.setValueAt(value, rowIndex, columnIndex);
 	}
-	
+
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
 		return false;
@@ -34,7 +35,7 @@ public class AbstractTableModelKorisnici extends AbstractTableModel {
 
 	@Override
 	public String getColumnName(int column) {
-		return listaKorisnika.getInstance().getColumnName(column);
+		return ListaKorisnika.getInstance().getColumnName(column);
 	}
 
 }

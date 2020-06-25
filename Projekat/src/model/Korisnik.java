@@ -2,7 +2,7 @@ package model;
 
 import java.io.Serializable;
 
-public class Korisnik implements Serializable{
+public class Korisnik implements Serializable {
 	/**
 	 * 
 	 */
@@ -12,7 +12,7 @@ public class Korisnik implements Serializable{
 	private String ime;
 	private String prezime;
 	private String tip;
-	
+
 	public String getUsername() {
 		return username;
 	}
@@ -64,5 +64,5 @@ public class Korisnik implements Serializable{
 		this.ime = ime;
 		this.prezime = prezime;
 		this.tip = tip;
-	}	
+	}
 }

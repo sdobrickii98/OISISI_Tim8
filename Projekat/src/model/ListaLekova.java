@@ -83,6 +83,35 @@ public class ListaLekova implements Serializable {
 		// lekovi.add(new Lek("G1","ASPIRIN","Galenika", true, (float) 11.5));
 	}
 
+	public void dodajLek(Lek lek) {
+		this.lekovi.add(lek);
+	}
+
+	public void dodajLek(String sifra, String naziv, String proizvodjac, boolean naRecept, Float cena) {
+		this.lekovi.add(new Lek(sifra, naziv, proizvodjac, naRecept, cena));
+	}
+
+	public void izbrisiLek(Lek l) {
+		lekovi.remove(l);
+	}
+
+	public void izbrisiLek(String sifra) {
+		for (Lek l : lekovi) {
+			if (l.getSifra() == sifra) {
+				lekovi.remove(l);
+				break;
+			}
+		}
+	}
+
+	public void izmeniLek(String sifra, String naziv, String proizvodjac, boolean naRecept, Float cena, Lek lek) {
+		lek.setSifra(sifra);
+		lek.setNaziv(naziv);
+		lek.setProizvodjac(proizvodjac);
+		lek.setNaRecept(naRecept);
+		lek.setCena(cena);
+	}
+
 	public void serijalizacijaLekova() {
 		try {
 			FileOutputStream fLekova = new FileOutputStream("lekovi.ser");

@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -13,6 +14,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import model.ListaKorisnika;
+import model.ListaLekova;
 
 public class MainFrame extends JFrame {
 
@@ -38,7 +40,11 @@ public class MainFrame extends JFrame {
 		tabbedPane.setFont(new Font("Arial", Font.PLAIN, 30));
 		getContentPane().add(tabbedPane, BorderLayout.CENTER);
 
+		final ToolBarLek lekToolbar = new ToolBarLek();
+		getContentPane().add(lekToolbar, BorderLayout.NORTH);
+
 		JLabel lblNewLabel = new JLabel("");
+		lekToolbar.add(lblNewLabel);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel.setIcon(new ImageIcon(MainFrame.class.getResource("/slike/imelaLogo.jpg")));
 
@@ -48,9 +54,26 @@ public class MainFrame extends JFrame {
 		lblNewLabel2.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel2.setIcon(new ImageIcon(MainFrame.class.getResource("/slike/imelaLogo.jpg")));
 
-		getContentPane().add(korisnikToolbar, BorderLayout.NORTH);
-		korisnikToolbar.show();
+		tabbedPane.addChangeListener(new ChangeListener() {
+			@SuppressWarnings("deprecation")
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
 
+				// TODO Auto-generated method stub
+				int i = tabbedPane.getSelectedIndex();
+
+				Global.setVar(i);
+				if (i == 0) {
+					getContentPane().add(lekToolbar, BorderLayout.NORTH);
+					lekToolbar.show();
+					korisnikToolbar.hide();
+				} else if (i == 1) {
+					getContentPane().add(korisnikToolbar, BorderLayout.NORTH);
+					lekToolbar.hide();
+					korisnikToolbar.show();
+				}
+			}
+		});
 		this.addWindowListener(new WindowListener() {
 
 			@Override
@@ -68,6 +91,7 @@ public class MainFrame extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
 				// TODO Auto-generated method stub
+				ListaLekova.getInstance().serijalizacijaLekova();
 				ListaKorisnika.getInstance().serijalizacijaKorisnika();
 			}
 
@@ -92,12 +116,16 @@ public class MainFrame extends JFrame {
 			@Override
 			public void windowOpened(WindowEvent arg0) {
 				// TODO Auto-generated method stub
+				ListaLekova.getInstance().deserijalizacijaLekova();
+
 				System.out.println(Global.getGlobalTipKorisnika());
 				if (Global.getGlobalTipKorisnika().equals("Administrator")) {
-					tabbedPane.setEnabledAt(0, true);
-					tabbedPane.setSelectedIndex(0);
-				} else {
 					tabbedPane.setEnabledAt(0, false);
+					tabbedPane.setEnabledAt(1, true);
+					tabbedPane.setSelectedIndex(1);
+				} else {
+					tabbedPane.setEnabledAt(1, false);
+					tabbedPane.setEnabledAt(0, true);
 					tabbedPane.setSelectedIndex(0);
 				}
 

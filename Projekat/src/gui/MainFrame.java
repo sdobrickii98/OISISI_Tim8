@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.text.ParseException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -15,6 +16,8 @@ import javax.swing.event.ChangeListener;
 
 import model.ListaKorisnika;
 import model.ListaLekova;
+import model.ListaProdavnica;
+import model.ListaRecepata;
 
 public class MainFrame extends JFrame {
 
@@ -54,6 +57,18 @@ public class MainFrame extends JFrame {
 		lblNewLabel2.setHorizontalAlignment(SwingConstants.LEFT);
 		lblNewLabel2.setIcon(new ImageIcon(MainFrame.class.getResource("/slike/imelaLogo.jpg")));
 
+		final ToolBarRecept receptToolbar = new ToolBarRecept();
+		JLabel lblNewLabel3 = new JLabel("");
+		receptToolbar.add(lblNewLabel3);
+		lblNewLabel3.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNewLabel3.setIcon(new ImageIcon(MainFrame.class.getResource("/slike/imelaLogo.jpg")));
+		
+		final ToolBarProdavnica prodavnicaToolbar = new ToolBarProdavnica();
+		JLabel lblNewLabel4 = new JLabel("");
+		prodavnicaToolbar.add(lblNewLabel4);
+		lblNewLabel4.setHorizontalAlignment(SwingConstants.LEFT);
+		lblNewLabel4.setIcon(new ImageIcon(MainFrame.class.getResource("/slike/imelaLogo.jpg")));		
+
 		tabbedPane.addChangeListener(new ChangeListener() {
 			@SuppressWarnings("deprecation")
 			@Override
@@ -67,12 +82,29 @@ public class MainFrame extends JFrame {
 					getContentPane().add(lekToolbar, BorderLayout.NORTH);
 					lekToolbar.show();
 					korisnikToolbar.hide();
+					receptToolbar.hide();
+					prodavnicaToolbar.hide();
 				} else if (i == 1) {
 					getContentPane().add(korisnikToolbar, BorderLayout.NORTH);
 					lekToolbar.hide();
 					korisnikToolbar.show();
+					receptToolbar.hide();
+					prodavnicaToolbar.hide();
+				} else if (i == 2) {
+					getContentPane().add(receptToolbar, BorderLayout.NORTH);
+					lekToolbar.hide();
+					korisnikToolbar.hide();
+					receptToolbar.show();
+					prodavnicaToolbar.hide();
+				} else if (i == 3) {
+					getContentPane().add(prodavnicaToolbar, BorderLayout.NORTH);
+					lekToolbar.hide();
+					korisnikToolbar.hide();
+					receptToolbar.hide();
+					prodavnicaToolbar.show();
 				}
 			}
+
 		});
 		this.addWindowListener(new WindowListener() {
 
@@ -93,6 +125,13 @@ public class MainFrame extends JFrame {
 				// TODO Auto-generated method stub
 				ListaLekova.getInstance().serijalizacijaLekova();
 				ListaKorisnika.getInstance().serijalizacijaKorisnika();
+				ListaRecepata.getInstance().serijalizacijaRecepta();
+				try {
+					ListaProdavnica.getInstance().serijalizacijaProdavnica();
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 
 			@Override
@@ -117,15 +156,25 @@ public class MainFrame extends JFrame {
 			public void windowOpened(WindowEvent arg0) {
 				// TODO Auto-generated method stub
 				ListaLekova.getInstance().deserijalizacijaLekova();
-
+				ListaRecepata.getInstance().deserijalizacijaRecepta();
+				try {
+					ListaProdavnica.getInstance().deserijalizacijaProdavnica();
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				System.out.println(Global.getGlobalTipKorisnika());
 				if (Global.getGlobalTipKorisnika().equals("Administrator")) {
 					tabbedPane.setEnabledAt(0, false);
 					tabbedPane.setEnabledAt(1, true);
+					tabbedPane.setEnabledAt(2, false);
+					tabbedPane.setEnabledAt(3, true);
 					tabbedPane.setSelectedIndex(1);
 				} else {
 					tabbedPane.setEnabledAt(1, false);
 					tabbedPane.setEnabledAt(0, true);
+					tabbedPane.setEnabledAt(2, true);
+					tabbedPane.setEnabledAt(3, true);
 					tabbedPane.setSelectedIndex(0);
 				}
 

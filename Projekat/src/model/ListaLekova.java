@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import controller.LekoviController;
 
 public class ListaLekova implements Serializable {
@@ -143,5 +144,67 @@ public class ListaLekova implements Serializable {
 
 			cnf.printStackTrace();
 		}
-	}	
+	}
+
+	public void DodajLekNaRecept(Recept recept, String sifra) {
+		int exists = 0;
+		for (Lek l : ListaLekova.getInstance().getLekovi()) {
+
+			if (l.getSifra().equals(sifra)) {
+				exists = 1;
+				if (!recept.getSpisakLekova().contains(sifra)) {
+					recept.getSpisakLekova().add(sifra);
+				} else {
+					JOptionPane.showMessageDialog(null, "Lek je veæ na receptu!", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		}
+		if (exists == 0) {
+			JOptionPane.showMessageDialog(null, "Ne postoji lek sa tom šifrom!", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	public void UkloniLekSaRecepta(Recept recept, String sifra) {
+				if (recept.getSpisakLekova().contains(sifra)) {
+					recept.getSpisakLekova().remove(sifra);
+				} else {
+					JOptionPane.showMessageDialog(null, "Lek nije na receptu!", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+				}
+	}
+	
+	public void DodajLekUKorpu(Prodavnica prodavnica, String sifra) {
+		int exists = 0;
+		for (Lek l : ListaLekova.getInstance().getLekovi()) {
+
+			if (l.getSifra().equals(sifra)) {
+				exists = 1;
+				if (!prodavnica.getSpisakLekova().contains(sifra) && !l.getNaRecept()) {
+					prodavnica.getSpisakLekova().add(sifra);
+				} else {
+					JOptionPane.showMessageDialog(null, "Lek je veæ u korpi ili se izdaje samo na recept!", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		}
+		if (exists == 0) {
+			JOptionPane.showMessageDialog(null, "Ne postoji lek sa tom šifrom!", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	public void DodajCeoReceptUKorpu(Prodavnica prodavnica, String sifra) {
+		int exists = 0;
+		for (Lek l : ListaLekova.getInstance().getLekovi()) {
+
+			if (l.getSifra().equals(sifra)) {
+				exists = 1;
+				if (!prodavnica.getSpisakLekova().contains(sifra)) {
+					prodavnica.getSpisakLekova().add(sifra);
+				} else {
+					JOptionPane.showMessageDialog(null, "Lek je veæ u korpi!", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		}
+		if (exists == 0) {
+			JOptionPane.showMessageDialog(null, "Ne postoji lek sa tom šifrom!", "GREŠKA", JOptionPane.ERROR_MESSAGE);
+		}
+	}		
 }
